@@ -1,18 +1,18 @@
+import asyncio
+import collections.abc
+import concurrent.futures
+import logging
 import os
 import sys
-import asyncio
-import logging
 import traceback
-import concurrent.futures
-import collections.abc
-from enum import IntEnum
 from collections import deque
 from contextlib import suppress
+from enum import IntEnum
 
-from .worker import Worker
-from .slotpool import SlotPool
-from .serializer import Serializer, PickleType
 from . import util
+from .serializer import PickleType, Serializer
+from .slotpool import SlotPool
+from .worker import Worker
 
 _logger = logging.Logger('distex.Pool')
 

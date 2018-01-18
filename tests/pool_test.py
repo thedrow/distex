@@ -1,6 +1,6 @@
-import unittest
-import itertools
 import asyncio
+import itertools
+import unittest
 import warnings
 
 from distex import Pool, util

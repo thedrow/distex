@@ -10,6 +10,7 @@
 #
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration ------------------------------------------------
@@ -135,4 +136,3 @@ def setup(app):
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'distexdoc'
-

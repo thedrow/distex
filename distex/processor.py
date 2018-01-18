@@ -1,11 +1,11 @@
-import asyncio
 import argparse
+import asyncio
 import logging
 import signal
 
+from distex import util
 from distex.pool import LoopType, RemoteException
 from distex.serializer import Serializer
-from distex import util
 
 signal.signal(signal.SIGINT, signal.SIG_IGN)
 

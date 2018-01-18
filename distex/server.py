@@ -1,8 +1,8 @@
-import os
-import sys
+import argparse
 import asyncio
 import logging
-import argparse
+import os
+import sys
 
 from . import util
 
