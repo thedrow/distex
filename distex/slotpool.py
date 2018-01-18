@@ -7,7 +7,7 @@ class SlotPool:
     Pool that manages a limited number of contendable resource slots.
     """
     __slots__ = ('num_free', 'capacity', '_slots',
-            '_loop', '_get_waiters', '_slot_ready_waiter')
+                 '_loop', '_get_waiters', '_slot_ready_waiter')
 
     def __init__(self, *, loop=None):
         self.num_free = 0

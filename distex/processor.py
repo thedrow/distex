@@ -32,10 +32,10 @@ class Processor(asyncio.Protocol):
     async def create(self):
         if self._unix_path:
             self._transport, _ = await self._loop.create_unix_connection(
-                    lambda: self, self._unix_path)
+                lambda: self, self._unix_path)
         else:
             self._transport, _ = await self._loop.create_connection(
-                    lambda: self, self._host, self._port)
+                lambda: self, self._host, self._port)
 
     async def worker(self):
         while True:
@@ -61,7 +61,7 @@ class Processor(asyncio.Protocol):
                 success = 0
             del func, args, kwargs
             self._serializer.write_response(
-                    self._transport.write, success, result)
+                self._transport.write, success, result)
             del result
 
     def peername(self):
@@ -85,16 +85,16 @@ class Processor(asyncio.Protocol):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-            description='Run a single task processor',
-            formatter_class=argparse.RawTextHelpFormatter)
+        description='Run a single task processor',
+        formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('--host', '-H', dest='host',
-            type=str, help='connect to host')
+                        type=str, help='connect to host')
     parser.add_argument('--port', '-p', dest='port',
-            type=int, help='port number')
+                        type=int, help='port number')
     parser.add_argument('--unix_path', '-u', dest='unix_path',
-            type=str, help='connect to Unix domain socket')
+                        type=str, help='connect to Unix domain socket')
     parser.add_argument('--loop', '-l', dest='loop', default=0,
-            type=int, help='0=default 1=asyncio 2=uvloop 3=proactor 4=quamash')
+                        type=int, help='0=default 1=asyncio 2=uvloop 3=proactor 4=quamash')
     args = parser.parse_args()
 
     if args.loop == LoopType.default:

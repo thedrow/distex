@@ -13,7 +13,7 @@ class Server:
     """
     Serve requests from remote pools to spawn local processors.
     Each spawned processor will by itself connect back to the requesting pool.
-    
+
     Use only in a trusted network environment.
     """
 
@@ -26,7 +26,7 @@ class Server:
 
     async def create(self):
         self._server = await asyncio.start_server(
-                self.handle_request, self._host, self._port, loop=self._loop)
+            self.handle_request, self._host, self._port, loop=self._loop)
         _logger.info(f'Serving on port {self._port}')
 
     async def handle_request(self, reader, writer):
@@ -40,10 +40,10 @@ class Server:
 
         # start processors that will connect back to the remote server
         asyncio.gather(*[asyncio.create_subprocess_exec(
-                sys.executable, '-m', 'distex.processor',
-                '-H', req_host, '-p', port, '-l', worker_loop,
-                stdout=None, stderr=None, loop=self._loop)
-                for _ in range(num_workers)])
+            sys.executable, '-m', 'distex.processor',
+            '-H', req_host, '-p', port, '-l', worker_loop,
+            stdout=None, stderr=None, loop=self._loop)
+            for _ in range(num_workers)])
 
         writer.close()
 
@@ -62,13 +62,13 @@ class Server:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-            description=('Run a process-spawning distex server. '
-                    'Use only in a trusted network environment.'),
-            formatter_class=argparse.RawTextHelpFormatter)
+        description=('Run a process-spawning distex server. '
+                     'Use only in a trusted network environment.'),
+        formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('--host', '-H', dest='host', default='0.0.0.0',
-            type=str, help='local host to serve from')
+                        type=str, help='local host to serve from')
     parser.add_argument('--port', '-p', dest='port', default=util.DEFAULT_PORT,
-            type=int, help='port number to serve from')
+                        type=int, help='port number to serve from')
     args = parser.parse_args()
 
     util.logToConsole()

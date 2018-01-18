@@ -51,7 +51,8 @@ class PoolTest(unittest.TestCase):
         self.pool.shutdown()
 
     def assertNoWarnings(self, w):
-        self.assertEqual(len(w), 0, msg='\n'.join(str(warning.message) for warning in w))
+        self.assertEqual(len(w), 0, msg='\n'.join(
+            str(warning.message) for warning in w))
 
     def test_run_coro(self):
         with warnings.catch_warnings(record=True) as w:
@@ -70,7 +71,7 @@ class PoolTest(unittest.TestCase):
 
         async def coro():
             tasks = [self.pool.run_async(g, self.x[i], self.y[i],
-                    z=self.z[i]) for i in range(self.reps)]
+                                         z=self.z[i]) for i in range(self.reps)]
             return await asyncio.gather(*tasks)
 
         with warnings.catch_warnings(record=True) as w:
@@ -84,7 +85,7 @@ class PoolTest(unittest.TestCase):
         with warnings.catch_warnings(record=True) as w:
             with self.assertRaises(RuntimeError):
                 loop.run_until_complete(
-                        self.pool.run_async(exc, 'Deliberatly thrown'))
+                    self.pool.run_async(exc, 'Deliberatly thrown'))
 
             self.assertNoWarnings(w)
 
@@ -96,7 +97,7 @@ class PoolTest(unittest.TestCase):
 
         with warnings.catch_warnings(record=True) as w:
             interference = self.pool.map(f,
-                    2 * self.x[:self.pool.total_workers() + 1])
+                                         2 * self.x[:self.pool.total_workers() + 1])
             pids = loop.run_until_complete(self.pool.run_on_all_async(getpid))
             self.assertEqual(self.pool.total_workers(), len(set(pids)))
 
@@ -154,7 +155,8 @@ class PoolTest(unittest.TestCase):
     def test_ordered_map_3_arg_chunked(self):
         with warnings.catch_warnings(record=True) as w:
             expected = list(map(g, self.x, self.y, self.z))
-            actual = list(self.pool.map(g, self.x, self.y, self.z, chunksize=10))
+            actual = list(self.pool.map(
+                g, self.x, self.y, self.z, chunksize=10))
             self.assertEqual(actual, expected)
 
             self.assertNoWarnings(w)
@@ -163,7 +165,7 @@ class PoolTest(unittest.TestCase):
 
         async def coro():
             return [v async for v in self.pool.map_async(g,
-                    self.x, self.y, self.z)]
+                                                         self.x, self.y, self.z)]
 
         with warnings.catch_warnings(record=True) as w:
             expected = list(map(g, self.x, self.y, self.z))
@@ -176,7 +178,7 @@ class PoolTest(unittest.TestCase):
 
         async def coro():
             return [v async for v in self.pool.map_async(g,
-                    self.xyz, star=True)]
+                                                         self.xyz, star=True)]
 
         with warnings.catch_warnings(record=True) as w:
             expected = list(itertools.starmap(g, self.xyz))
@@ -189,7 +191,7 @@ class PoolTest(unittest.TestCase):
 
         async def coro():
             return [v async for v in self.pool.map_async(g,
-                    ait(self.xyz), star=True)]
+                                                         ait(self.xyz), star=True)]
 
         with warnings.catch_warnings(record=True) as w:
             expected = list(itertools.starmap(g, self.xyz))
@@ -202,7 +204,7 @@ class PoolTest(unittest.TestCase):
         with warnings.catch_warnings(record=True) as w:
             expected = list(itertools.starmap(g, self.xyz))
             actual = list(self.pool.map(g,
-                        ait(self.x), ait(self.y), self.z))
+                                        ait(self.x), ait(self.y), self.z))
             self.assertEqual(actual, expected)
 
             self.assertNoWarnings(w)
@@ -211,7 +213,7 @@ class PoolTest(unittest.TestCase):
 
         async def coro():
             return [v async for v in self.pool.map_async(g,
-                    ait(self.x), ait(self.y), self.z, chunksize=10)]
+                                                         ait(self.x), ait(self.y), self.z, chunksize=10)]
 
         with warnings.catch_warnings(record=True) as w:
             expected = list(itertools.starmap(g, self.xyz))
@@ -225,7 +227,7 @@ class PoolTest(unittest.TestCase):
             expected = g(1, 2, 3)
             loop.set_default_executor(self.pool)
             actual = loop.run_until_complete(
-                    loop.run_in_executor(None, g, 1, 2, 3))
+                loop.run_in_executor(None, g, 1, 2, 3))
             self.assertEqual(actual, expected)
 
             self.assertNoWarnings(w)

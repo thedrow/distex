@@ -12,7 +12,8 @@ RESP_HEADER_SIZE = struct.calcsize(RESP_HEADER_FMT)
 PICKLE_MODULES = [pickle, cloudpickle, dill]
 
 
-class SerializeError(Exception): pass
+class SerializeError(Exception):
+    pass
 
 
 class PickleType(IntEnum):
@@ -27,7 +28,7 @@ class Serializer:
     """
 
     __slots__ = ('data', 'last_func', 'func_pickle', 'data_pickle',
-            'ddumps', 'dloads')
+                 'ddumps', 'dloads')
 
     Func_cache = [None, None, None]
 
@@ -56,12 +57,16 @@ class Serializer:
         kw = self.ddumps(kwargs, -1) if kwargs else b''
 
         header = struct.pack(REQ_HEADER_FMT,
-                len(f), len(ar), len(kw), self.func_pickle, self.data_pickle,
-                no_star, do_map)
+                             len(f), len(ar), len(
+                                 kw), self.func_pickle, self.data_pickle,
+                             no_star, do_map)
         write(header)
-        if f: write(f)
-        if ar: write(ar)
-        if kw: write(kw)
+        if f:
+            write(f)
+        if ar:
+            write(ar)
+        if kw:
+            write(kw)
         del ar, kw
 
     def get_requests(self, data):
@@ -71,17 +76,17 @@ class Serializer:
         self.data += data
         data = self.data
         while data:
-            l = len(data)
-            if l < REQ_HEADER_SIZE:
+            data_length = len(data)
+            if data_length < REQ_HEADER_SIZE:
                 return
             header = data[:REQ_HEADER_SIZE]
             (func_size, args_size, kwargs_size,
-                    self.func_pickle, self.data_pickle,
-                    no_star, do_map) = struct.unpack(REQ_HEADER_FMT, header)
+             self.func_pickle, self.data_pickle,
+             no_star, do_map) = struct.unpack(REQ_HEADER_FMT, header)
             func_end = REQ_HEADER_SIZE + func_size
             args_end = func_end + args_size
             end = args_end + kwargs_size
-            if l < end:
+            if data_length < end:
                 return
             f = data[REQ_HEADER_SIZE: func_end]
             a = data[func_end:args_end]
@@ -120,17 +125,17 @@ class Serializer:
         self.data += data
         data = self.data
         while data:
-            l = len(data)
-            if l < RESP_HEADER_SIZE:
+            data_length = len(data)
+            if data_length < RESP_HEADER_SIZE:
                 return
             header = data[:RESP_HEADER_SIZE]
             size, success = struct.unpack(RESP_HEADER_FMT, header)
             end = RESP_HEADER_SIZE + size
-            if l < end:
+            if data_length < end:
                 return
             if size:
                 payload = (data if end < 4096 else
-                        memoryview(data)) [RESP_HEADER_SIZE:end]
+                           memoryview(data))[RESP_HEADER_SIZE:end]
                 result = self.dloads(payload)
                 del payload
             else:

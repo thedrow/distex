@@ -124,7 +124,7 @@ def logToFile(path, level=logging.INFO):
     logger = logging.getLogger()
     logger.setLevel(level)
     formatter = logging.Formatter(
-            '%(asctime)s %(name)s %(levelname)s %(message)s')
+        '%(asctime)s %(name)s %(levelname)s %(message)s')
     handler = logging.FileHandler(path)
     handler.setFormatter(formatter)
     logger.addHandler(handler)
@@ -137,7 +137,7 @@ def logToConsole(level=logging.INFO):
     logger = logging.getLogger()
     logger.setLevel(level)
     formatter = logging.Formatter(
-            '%(asctime)s %(name)s %(levelname)s %(message)s')
+        '%(asctime)s %(name)s %(levelname)s %(message)s')
     handler = logging.StreamHandler()
     handler.setFormatter(formatter)
     logger.addHandler(handler)

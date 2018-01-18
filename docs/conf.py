@@ -20,12 +20,12 @@ sys.path.insert(0, os.path.abspath('..'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-#    'sphinx.ext.mathjax',
+    #    'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
-#    'sphinx.ext.autosummary',
-#    'sphinx_autodoc_typehints',
-#    'sphinx.ext.githubpages',
-    ]
+    #    'sphinx.ext.autosummary',
+    #    'sphinx_autodoc_typehints',
+    #    'sphinx.ext.githubpages',
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -90,7 +90,7 @@ html_theme_options = {
     'fixed_sidebar': True,
     'link': '#266',
     'sidebar_link': '#266',
-    }
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -106,7 +106,7 @@ html_sidebars = {
     '**': [
         'about.html',
         'navigation.html',
-#        'relations.html',  # needs 'show_related': True theme option to display
+        #        'relations.html',  # needs 'show_related': True theme option to display
         'searchbox.html',
         'donate.html',
     ]
@@ -117,7 +117,7 @@ autodoc_member_order = "bysource"
 autodoc_default_flags = [
     'members',
     'undoc-members',
-    ]
+]
 
 
 def onDocstring(app, what, name, obj, options, lines):
